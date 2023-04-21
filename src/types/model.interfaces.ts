@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-type User = {
+interface User {
     id: string | Types.ObjectId;
     email: string;
     password: string;
@@ -9,12 +9,12 @@ type User = {
     updatedAt: Date;
 };
 
-type Post = {
+interface Post {
     id: string | Types.ObjectId;
     text: string;
 };
 
-type Comment = {
+interface Comment {
     id: string | Types.ObjectId;
     text: string;
     postId: string | Types.ObjectId;
