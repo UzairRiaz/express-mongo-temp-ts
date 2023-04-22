@@ -24,4 +24,4 @@ const validate = (schema: Schema) => (req: Request, res: Response, next: NextFun
     }
 };
 
-module.exports = validate;
+export { validate };

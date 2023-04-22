@@ -12,5 +12,5 @@ const pick = (object: ObjectWithKeys, ...keys: string[]) => {
 };
 
 export {
-    pick,
+    pick
 };

@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/v1/', router);
+app.use('/v1', router);
 
 const port: number = Number(process.env.PORT) || 5000;
 
