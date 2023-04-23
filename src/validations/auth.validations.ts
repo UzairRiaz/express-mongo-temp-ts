@@ -6,7 +6,9 @@ export const signUpValidation = joi.object({
     password: joi.string().min(6).required(),
 });
 
-export const logInValidation = joi.object({
-    email: joi.string().email().required(),
-    password: joi.string().min(6).required(),
-});
+export const logInValidation = {
+    body: {
+        email: joi.string().email().required(),
+        password: joi.string().min(6).required(),
+    }
+}
