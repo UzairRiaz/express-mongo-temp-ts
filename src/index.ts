@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import router from './routes';
+
 require('dotenv').config();
+require('./config/db').default();
 
 const app = express();
 
