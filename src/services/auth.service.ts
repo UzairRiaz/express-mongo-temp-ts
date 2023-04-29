@@ -1,10 +1,14 @@
-import mongoose from "mongoose";
+import { comparePassword } from "../helpers/auth.helpers";
 
-const User = mongoose.model("User");
+import { User } from "../models/User.model";
 
-const loginUserWithEmailAndPassword = async (email: string, password: string) => {
-    const user = User.findOne({ email });
-    if (!user || !(await user.isPasswordMatch(password))) {
+export const loginUserWithEmailAndPassword = async (email: string, password: string) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new Error("Incorrect email or password");
+    }
+    const passwordMatched = await comparePassword(password, user.password)
+    if (!passwordMatched) {
         throw new Error("Incorrect email or password");
     }
     return user;

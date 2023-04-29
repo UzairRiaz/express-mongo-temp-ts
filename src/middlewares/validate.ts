@@ -10,16 +10,16 @@ const validate = (schema: any) => (req: Request, res: Response, next: NextFuncti
     const { value, error } = Joi.compile(validSchema)
         .prefs({ errors: { label: 'key' }, abortEarly: false })
         .validate(object);
-    console.log({ value, error })
+
     if (error) {
         const errorMessage = error.details.map((details: any) => details.message).join(', ');
         sendResponse(res, {
             status: BAD_REQUEST,
             message: errorMessage,
         });
-        return next(error);
+        next();
     } else {
-        Object.assign(req, {});
+        Object.assign({ ...value, ...req }, {});
         return next();
     }
 };

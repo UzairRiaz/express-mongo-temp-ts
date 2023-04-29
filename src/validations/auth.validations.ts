@@ -9,6 +9,6 @@ export const signUpValidation = joi.object({
 export const logInValidation = {
   body: {
     email: joi.string().email().required(),
-    password: joi.string().min(6).required(),
+    password: joi.string().required(),
   },
 };
