@@ -7,6 +7,7 @@ interface User {
     name: string;
     createdAt: Date;
     updatedAt: Date;
+    role: string;
 }
 
 interface Post {

@@ -1,7 +1,7 @@
 import Joi from "joi";
+import { BAD_REQUEST } from "http-status";
 import { Request, Response, NextFunction } from "express";
 import sendResponse from "../utils/sendResponse";
-import { BAD_REQUEST } from 'http-status';
 import { pick } from '../utils/pick';
 
 const validate = (schema: any) => (req: Request, res: Response, next: NextFunction) => {
@@ -13,11 +13,7 @@ const validate = (schema: any) => (req: Request, res: Response, next: NextFuncti
 
     if (error) {
         const errorMessage = error.details.map((details: any) => details.message).join(', ');
-        sendResponse(res, {
-            status: BAD_REQUEST,
-            message: errorMessage,
-        });
-        next();
+        return sendResponse(res, { status: BAD_REQUEST, message: errorMessage });
     } else {
         Object.assign({ ...value, ...req }, {});
         return next();

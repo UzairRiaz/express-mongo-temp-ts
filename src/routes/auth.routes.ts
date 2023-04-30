@@ -1,14 +1,15 @@
 import { Router } from 'express';
-import { validate } from '../middlewares/validate';
+import { validate } from '../middlewares/validate.middleware';
+import auth from '../middlewares/auth.middleware';
 import { logInValidation, signUpValidation } from '../validations/auth.validations';
-import { login, signup } from '../controllers/auth.controller';
+import { login, signup, getProfile } from '../controllers/auth.controller';
 
 const router: Router = Router();
 
 router
-    .post('/login', validate(logInValidation), login)
     .post('/register', validate(signUpValidation), signup)
-    .get('/me')
+    .post('/login', validate(logInValidation), login)
+    .get('/me', auth(), getProfile)
     .get('/logout');
 
 export default router;

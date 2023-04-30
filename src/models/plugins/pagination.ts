@@ -4,8 +4,8 @@ const paginate = (schema: Schema) => {
     schema.statics.paginate = async function (filter: any, options: any) {
         let sort = options.sort || '';
         if (options.sortBy) {
-            const sortingCriteria: String[] = [];
-            options.sortBy.split(',').forEach((sortOption: String) => {
+            const sortingCriteria: string[] = [];
+            options.sortBy.split(',').forEach((sortOption: string) => {
                 const [key, order] = sortOption.split(':');
                 sortingCriteria.push((order === 'desc' ? '-' : '') + key);
             });
@@ -13,8 +13,8 @@ const paginate = (schema: Schema) => {
         } else {
             sort = 'createdAt';
         }
-        let limit: number = parseInt(options.limit) || 10;
-        let page: number = parseInt(options.page) || 1;
+        const limit: number = parseInt(options.limit) || 10;
+        const page: number = parseInt(options.page) || 1;
         const skip: number = (page - 1) * limit;
         const select: string = options.select || '';
 
