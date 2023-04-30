@@ -8,7 +8,7 @@ import { RequestWithUser } from '../types/express.interfaces';
 
 const Roles = mongoose.model('roles');
 
-const verifyCallback = (req: RequestWithUser, resolve: any, reject: any, requiredRights: string[]) => async (err: ApiError, user: User, info: any) => {
+const verifyCallback = (req: any, resolve: any, reject: any, requiredRights: string[]) => async (err: ApiError, user: User, info: any) => {
     if (err || info || !user) {
         return reject(new ApiError({ message: 'Please authenticate', status: httpStatus.UNAUTHORIZED }));
     }
