@@ -1,5 +1,5 @@
 import { comparePassword, hashPassword } from "../helpers/auth.helpers";
-import { BAD_GATEWAY, UNAUTHORIZED } from "http-status";
+import { UNAUTHORIZED } from "http-status";
 
 import { User } from "../models/User.model";
 import { ApiError } from "../utils/catchAsync";

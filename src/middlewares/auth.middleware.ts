@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
 import passport from 'passport';
 import httpStatus from 'http-status';
 import { ApiError } from '../utils/catchAsync';
 import { User } from '../types/model.interfaces';
 import { RequestWithUser } from '../types/express.interfaces';
 
-const Roles = mongoose.model('roles');
+import { Role } from '../models/Role.model';
 
 const verifyCallback = (req: any, resolve: any, reject: any, requiredRights: string[]) => async (err: ApiError, user: User, info: any) => {
     if (err || info || !user) {
@@ -14,7 +13,8 @@ const verifyCallback = (req: any, resolve: any, reject: any, requiredRights: str
     }
     req.user = user;
     if (requiredRights.length) {
-        const { permissions } = await Roles.findOne({ name: user.role });
+        const role: any = await Role.findOne({ name: user.role });
+        const permissions = role.permissions ? role.permissions : [];
         const hasRequiredRights = requiredRights.every((requiredRight) => permissions.includes(requiredRight));
 
         if (!hasRequiredRights) {
@@ -34,7 +34,9 @@ const auth =
                 .then(() => {
                     next();
                 })
-                .catch((err) => next(err));
+                .catch((err) => {
+                    next(err)
+                });
         };
 
-module.exports = auth;
+export default auth;

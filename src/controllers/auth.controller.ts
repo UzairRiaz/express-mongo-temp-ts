@@ -1,4 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import {
+    OK, UNAUTHORIZED
+} from "http-status";
 import catchAsync from "../utils/catchAsync";
 import sendResponse from "../utils/sendResponse";
 import { loginUserWithEmailAndPassword, signupWithEmailAndPassword } from '../services/auth.service';
@@ -8,11 +11,11 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
     const { email, password } = req.body;
     const user = await loginUserWithEmailAndPassword({ email, password });
     if (!user) {
-        sendResponse(res, { status: 401, message: "Incorrect email or password" });
+        sendResponse(res, { status: UNAUTHORIZED, message: "Incorrect email or password" });
         return next();
     }
-    const token = await generateJWT(user.id);
-    sendResponse(res, { status: 200, message: "Login Successful", data: { user, token } });
+    const token = generateJWT(user.id);
+    sendResponse(res, { status: OK, message: "Login Successful", data: { user, token } });
     return next();
 });
 
@@ -20,17 +23,17 @@ export const signup = catchAsync(async (req: Request, res: Response, next: NextF
     const { email, password, name } = req.body;
     const user = await signupWithEmailAndPassword({ email, password, name });
     if (!user) {
-        sendResponse(res, { status: 401, message: "You already have an account please login." });
+        sendResponse(res, { status: UNAUTHORIZED, message: "You already have an account please login." });
         return next();
     }
-    const token = await generateJWT(user.id);
-    sendResponse(res, { status: 200, message: "Signup Successful", data: { user, token } });
+    const token = generateJWT(user.id);
+    sendResponse(res, { status: OK, message: "Signup Successful", data: { user, token } });
     return next();
 });
 
 export const getProfile = catchAsync(async (req: any, res: Response, next: NextFunction) => {
     const { user } = req;
-    sendResponse(res, { status: 200, message: "User Profile", data: { user } });
+    sendResponse(res, { status: OK, message: "User Profile", data: { user } });
     return next();
 });
 

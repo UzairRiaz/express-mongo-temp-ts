@@ -1,9 +1,15 @@
 import express, { Request, Response } from 'express';
 import router from './routes';
+import passport from 'passport';
+import jwtStrategy from './config/passport';
 
 require('./config/db').default();
 
 const app = express();
+
+// JWT authentication
+app.use(passport.initialize());
+passport.use(jwtStrategy(passport));
 
 app.use(express.json());
 
