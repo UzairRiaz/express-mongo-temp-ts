@@ -13,6 +13,10 @@ const routes: Array<RouteConfig> = [
         path: '/',
         router: require('./auth.routes').default,
     },
+    {
+        path: '/blogs',
+        router: require('./blog.routes').default,
+    }
 ];
 
 routes.forEach((route) => {
