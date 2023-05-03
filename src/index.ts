@@ -9,7 +9,7 @@ const app = express();
 
 // JWT authentication
 app.use(passport.initialize());
-passport.use(jwtStrategy(passport));
+passport.use("jwt", jwtStrategy(passport));
 
 app.use(express.json());
 

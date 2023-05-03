@@ -1,5 +1,3 @@
-import passport from 'passport'
-// import passportApiKey from "passport-headerapikey";
 import passportJwt, { StrategyOptions } from 'passport-jwt'
 import { User } from '../models/User.model'
 import { JWT_SECRET } from './env'
@@ -14,13 +12,17 @@ const options: StrategyOptions = {
 }
 
 export default (passport: any): Strategy => {
-    return passport.use(
-        "jwt",
-        new JwtStrategy(
-            options,
-            async (jwt_payload, done) => {
-                console.log(jwt_payload)
+    return new JwtStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: 'iamasecret',
+        },
+        async (jwt_payload, done) => {
+            const user = await User.findById(jwt_payload.id)
+            if (user) {
+                return done(null, user)
             }
-        )
+            return done(null, false)
+        }
     )
 }
