@@ -16,7 +16,11 @@ const routes: Array<RouteConfig> = [
     {
         path: '/blogs',
         router: require('./blog.routes').default,
-    }
+    },
+    {
+        path: '/comments',
+        router: require('./comments.routes').default,
+    },
 ];
 
 routes.forEach((route) => {

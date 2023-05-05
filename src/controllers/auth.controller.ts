@@ -4,7 +4,7 @@ import {
 } from "http-status";
 import catchAsync from "../utils/catchAsync";
 import sendResponse from "../utils/sendResponse";
-import { loginUserWithEmailAndPassword, signupWithEmailAndPassword } from '../services/auth.service';
+import { loginUserWithEmailAndPassword, signupWithEmailAndPassword } from '../services/auth.services';
 import { generateJWT } from '../helpers/jwt.helpers'
 
 export const login = catchAsync(async (req: Request, res: Response, next: NextFunction) => {

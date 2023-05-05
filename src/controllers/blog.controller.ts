@@ -1,17 +1,18 @@
 import catchAsync from "../utils/catchAsync";
 import { NextFunction, Request, Response } from "express";
-import { OK } from "http-status";
+import { OK, NOT_FOUND, UNAUTHORIZED } from "http-status";
 import { Blog } from "../models/Blog.model";
 import sendResponse from "../utils/sendResponse";
 import { User } from "../types/model.interfaces";
 import { ApiError } from "../utils/catchAsync";
-import blogService from "../services/blog.service";
+import blogService from "../services/blog.services";
 
 export const createBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user: User = req.user as User;
     const blog = await blogService.createBlog({ ...req.body, userId: user.id });
-    res.status(201).json({
-        status: 'success',
+    sendResponse(res, {
+        status: OK,
+        message: 'Blog created successfully',
         data: {
             blog,
         }
@@ -38,7 +39,7 @@ export const getAllBlogs = catchAsync(async (req: Request, res: Response, next: 
 export const getBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const blog = await blogService.getBlog(req.params.id);
     if (!blog) {
-        throw new ApiError({ message: 'Blog not found', status: 404 });
+        throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }
     sendResponse(res, {
         status: OK,
@@ -53,11 +54,11 @@ export const getBlog = catchAsync(async (req: Request, res: Response, next: Next
 export const editBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const blog = await Blog.findOne({ _id: req.params.id });
     if (!blog) {
-        throw new ApiError({ message: 'Blog not found', status: 404 });
+        throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }
     const user = req.user as User;
     if (blog.userId !== user.id) {
-        throw new ApiError({ message: 'You are not authorized to edit this blog', status: 401 });
+        throw new ApiError({ message: 'You are not authorized to edit this blog', status: UNAUTHORIZED });
     }
     await blogService.editBlog(req.params.id, req.body);
     sendResponse(res, {
@@ -70,11 +71,11 @@ export const editBlog = catchAsync(async (req: Request, res: Response, next: Nex
 export const deleteBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const blog = await Blog.findOne({ _id: req.params.id });
     if (!blog) {
-        throw new ApiError({ message: 'Blog not found', status: 404 });
+        throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }
     const user = req.user as User;
     if (blog.userId !== user.id) {
-        throw new ApiError({ message: 'You are not authorized to delete this blog', status: 401 });
+        throw new ApiError({ message: 'You are not authorized to delete this blog', status: UNAUTHORIZED });
     }
     await blogService.deleteBlog(req.params.id);
     sendResponse(res, {
