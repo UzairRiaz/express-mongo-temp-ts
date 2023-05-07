@@ -3,13 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import { OK, NOT_FOUND, UNAUTHORIZED } from "http-status";
 import { Blog } from "../models/Blog.model";
 import sendResponse from "../utils/sendResponse";
-import { User } from "../types/model.interfaces";
+import { User, Blog as BlogType } from "../types/model.interfaces";
 import { ApiError } from "../utils/catchAsync";
 import blogService from "../services/blog.services";
 
 export const createBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user: User = req.user as User;
-    const blog = await blogService.createBlog({ ...req.body, userId: user.id });
+    const blog = await blogService.createBlog({ ...req.body, userId: user.id }) as BlogType;
     sendResponse(res, {
         status: OK,
         message: 'Blog created successfully',
@@ -37,7 +37,7 @@ export const getAllBlogs = catchAsync(async (req: Request, res: Response, next: 
 });
 
 export const getBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const blog = await blogService.getBlog(req.params.id);
+    const blog = await blogService.getBlog(req.params.id) as BlogType;
     if (!blog) {
         throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }
@@ -52,7 +52,7 @@ export const getBlog = catchAsync(async (req: Request, res: Response, next: Next
 });
 
 export const editBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const blog = await Blog.findOne({ _id: req.params.id });
+    const blog = await Blog.findOne({ _id: req.params.id }) as BlogType;
     if (!blog) {
         throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }
@@ -69,7 +69,7 @@ export const editBlog = catchAsync(async (req: Request, res: Response, next: Nex
 });
 
 export const deleteBlog = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const blog = await Blog.findOne({ _id: req.params.id });
+    const blog = await Blog.findOne({ _id: req.params.id }) as BlogType;
     if (!blog) {
         throw new ApiError({ message: 'Blog not found', status: NOT_FOUND });
     }

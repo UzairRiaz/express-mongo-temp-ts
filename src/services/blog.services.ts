@@ -1,4 +1,5 @@
 import { Blog } from '../models/Blog.model';
+import { Blog as BlogType } from '../types/model.interfaces';
 
 const createBlog = async (blog: any) => {
     return Blog.create(blog);
@@ -74,7 +75,7 @@ const getBlog = async (id: string) => {
                 'user.email': 1,
             },
         },
-    ])
+    ]) as BlogType[];
     return blog[0];
 }
 

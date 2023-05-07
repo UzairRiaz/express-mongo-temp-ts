@@ -10,19 +10,23 @@ interface User {
     role: string;
 }
 
-interface Post {
+interface Blog {
     id: string | Types.ObjectId;
-    text: string;
+    title: string;
+    content: string;
+    userId: string | Types.ObjectId;
+    createdAt: Date;
 }
 
 interface Comment {
     id: string | Types.ObjectId;
     text: string;
-    postId: string | Types.ObjectId;
+    blogId: string | Types.ObjectId;
+    userId: string | Types.ObjectId;
 }
 
 export {
     User,
-    Post,
+    Blog,
     Comment,
 }
